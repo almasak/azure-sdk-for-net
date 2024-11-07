@@ -38,11 +38,15 @@ namespace Microsoft.Azure.Storage.DataMovement.Perf
 
         public override async Task RunAsync(CancellationToken cancellationToken)
         {
+            CopyDirectoryOptions options = new()
+            {
+                Recursive = true,
+            };
             TransferStatus transfer = await TransferManager.CopyDirectoryAsync(
                 _sourceContainer.GetDirectoryReference(string.Empty),
                 _destinationContainer.GetDirectoryReference(string.Empty),
                 CopyMethod.ServiceSideSyncCopy,
-                options: null,
+                options,
                 DefaultTransferContext,
                 CancellationToken.None);  // Don't pass cancellation token to let ransfer finish gracefully
             AssertTransferStatus(transfer);
